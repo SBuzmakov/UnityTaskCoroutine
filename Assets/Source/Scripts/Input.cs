@@ -12,7 +12,7 @@ public class Input : MonoBehaviour
     
     private void PressMouseButton0()
     {
-        if (UnityEngine.Input.GetKeyDown(KeyCode.Mouse0))
+        if (UnityEngine.Input.GetKeyDown(KeyCode.Mouse0)) 
             OnMouseButtonPressed?.Invoke();
     }
 }
