@@ -1,6 +1,5 @@
 using System;
 using System.Collections;
-using TMPro;
 using UnityEngine;
 
 namespace Source.Scripts
@@ -10,7 +9,7 @@ namespace Source.Scripts
         [SerializeField] private float _delayTime = 0.5f;
         [SerializeField] private bool _isWorking = true;
 
-        private bool _isCountingSwitchOn = false;
+        private bool _isCountingSwitchOn;
 
         public int Value { get; private set; }
 
@@ -31,7 +30,7 @@ namespace Source.Scripts
 
             while (_isWorking)
             {
-                yield return new WaitUntil(() => _isCountingSwitchOn == true);
+                yield return new WaitUntil(() => _isCountingSwitchOn);
                 
                 IncreaseValue();
 
@@ -48,15 +47,7 @@ namespace Source.Scripts
 
         public void SwitchCounting()
         {
-            switch (_isCountingSwitchOn)
-            {
-                case false:
-                    _isCountingSwitchOn = true;
-                    break;
-                case true:
-                    _isCountingSwitchOn = false;
-                    break;
-            }
+            _isCountingSwitchOn = !_isCountingSwitchOn;
         }
     }
 }
