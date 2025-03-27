@@ -22,11 +22,6 @@ namespace Source.Scripts
 
             OnValueChanged?.Invoke();
 
-            StartCauntup();
-        }
-
-        private void StartCauntup()
-        {
             StartCoroutine(Countup());
         }
 
