@@ -8,12 +8,24 @@ namespace Source.Scripts
     {
         [SerializeField] private float _delayTime = 0.5f;
         [SerializeField] private bool _isWorking = true;
+        [SerializeField] private Input _input;
 
-        private bool _isCountingSwitchOn;
+        private Coroutine _coroutine;
+        private bool _isCounting = true;
+
+        public event Action OnValueChanged;
 
         public int Value { get; private set; }
 
-        public event Action OnValueChanged;
+        private void OnEnable()
+        {
+            _input.OnMouseButtonPressed += SwitchCounting;
+        }
+
+        private void OnDisable()
+        {
+            _input.OnMouseButtonPressed -= SwitchCounting;
+        }
 
         private void Start()
         {
@@ -21,7 +33,7 @@ namespace Source.Scripts
 
             OnValueChanged?.Invoke();
 
-            StartCoroutine(Countup());
+            _coroutine = StartCoroutine(Countup());
         }
 
         private IEnumerator Countup()
@@ -30,8 +42,6 @@ namespace Source.Scripts
 
             while (_isWorking)
             {
-                yield return new WaitUntil(() => _isCountingSwitchOn);
-                
                 IncreaseValue();
 
                 OnValueChanged?.Invoke();
@@ -47,7 +57,12 @@ namespace Source.Scripts
 
         public void SwitchCounting()
         {
-            _isCountingSwitchOn = !_isCountingSwitchOn;
+            if (_isCounting)
+                StopCoroutine(_coroutine);
+            else
+                _coroutine = StartCoroutine(Countup());
+
+            _isCounting = !_isCounting;
         }
     }
 }
